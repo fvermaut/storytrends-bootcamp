@@ -17,6 +17,7 @@ services:
     environment:
       - SUPABASE_URL=${STORYTRENDS_API_URL}
       - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
+      - DEV_MODE=${DEV_MODE}
     image: public.ecr.aws/i2j9j1s3/storytrends:st-cli-rc-latest
     volumes:
       - cli-settings:/usr/src/app/.settings
