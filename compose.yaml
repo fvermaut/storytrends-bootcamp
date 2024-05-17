@@ -1,36 +1,18 @@
 services:
-  st-dashboard:
+  st-source-kaggle:
     profiles:
-      - cli
+      - bootcamp
     environment:
-      - SUPABASE_URL=${STORYTRENDS_API_URL}
-      - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
-    image: public.ecr.aws/i2j9j1s3/storytrends:st-dashboard-rc-latest
-    ports:
-      - 8050:8050
+      - SUPABASE_URL=${SUPABASE_URL_DOCKER}
+      - SUPABASE_KEY=${SUPABASE_ANON_KEY}
+    build:
+      context: ./
+      dockerfile: ./source-kaggle/Dockerfile
+      target: runtime
     volumes:
       - cli-settings:/app/.settings
-
-  st-cli:
-    profiles:
-      - cli
-    environment:
-      - SUPABASE_URL=${STORYTRENDS_API_URL}
-      - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
-      - DEV_MODE=${DEV_MODE:-false}
-    image: public.ecr.aws/i2j9j1s3/storytrends:st-cli-rc-latest
-    volumes:
-      - cli-settings:/usr/src/app/.settings
-
-  st-demo:
-    environment:
-      - SUPABASE_URL=${STORYTRENDS_API_URL}
-      - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
-    ports:
-      - 3000:3000
-    image: public.ecr.aws/i2j9j1s3/storytrends:st-demo-rc-latest
-    volumes:
-      - cli-settings:/usr/src/app/.settings
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   model-cache:
