@@ -3,8 +3,10 @@ services:
     profiles:
       - bootcamp
     environment:
-      - SUPABASE_URL=${SUPABASE_URL_DOCKER}
-      - SUPABASE_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_URL=${STORYTRENDS_API_URL}
+      - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
+      - KAGGLE_USERNAME=${KAGGLE_USERNAME:-""}
+      - KAGGLE_KEY=${KAGGLE_KEY:-""}
     build:
       context: ./
       dockerfile: ./source-kaggle/Dockerfile
