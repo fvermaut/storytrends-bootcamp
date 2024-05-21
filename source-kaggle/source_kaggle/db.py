@@ -26,7 +26,10 @@ class Database:
         # Connect to Supabase
         url: str = os.environ.get("SUPABASE_URL")
         key: str = os.environ.get("SUPABASE_KEY")
-        clientOptions = ClientOptions(postgrest_client_timeout=999999)
+        clientOptions = ClientOptions(
+            postgrest_client_timeout=999999,
+            auto_refresh_token=False,  # needed to avoid hang of application at exit: https://github.com/supabase-community/supabase-py/issues/451#issuecomment-1736329894
+        )
         self.database: Client = create_client(url, key, clientOptions)
         if auth:
             try:

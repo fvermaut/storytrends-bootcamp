@@ -22,4 +22,4 @@ if __name__ == "__main__":
         print(f"An error occurred: {e}")
     finally:
         print("Process completed.")
-        exit(0)
+        sys.exit(0)
