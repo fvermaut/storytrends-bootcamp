@@ -19,3 +19,4 @@ services:
 volumes:
   cli-settings:
     name: "storytrends-cli-settings"
+    external: true
