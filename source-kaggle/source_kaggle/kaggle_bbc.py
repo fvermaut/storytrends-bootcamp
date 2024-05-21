@@ -1,19 +1,20 @@
 import os
 from datetime import datetime
 import time
+import traceback
 import uuid
 import kaggle
 import pandas as pd
-from source_kaggle.db import Database
+from source_kaggle.db import Database, Story
 
 LOCAL_FILE = ".data/bbc_news.csv"
 LOCAL_BACKUP_FILE = "source_kaggle/test_sources_bkp/bbc_news.csv"
 
-database = Database(auth=True)
-
 
 def import_kaggle_bbc(source_id: uuid.UUID, from_date: datetime) -> tuple[bool, str]:
     try:
+        database = Database(auth=True)
+
         os.environ["KAGGLE_USERNAME"] = os.getenv("KAGGLE_USERNAME")
         os.environ["KAGGLE_KEY"] = os.getenv("KAGGLE_KEY")
 
@@ -46,30 +47,30 @@ def import_kaggle_bbc(source_id: uuid.UUID, from_date: datetime) -> tuple[bool, 
 
         print(f"filtered data - {data.shape[0]} rows")
 
-        # Loop through all items of the DataFrame, and update the db (use list comprehension for performance)
+        print("Preparing data...")
+        bulk_data = []
         [
-            database.upsert_story(
-                guid=guid[
-                    : guid.find("#")
-                ],  # need to do this because those would be duplicates
-                title=title,
-                description=description,
-                pubdate=pubdate,
-                overwrite=True,
-                source_id=source_id,
+            bulk_data.append(
+                Story(
+                    title=title,
+                    summary=description,
+                    pub_date=pubdate,
+                    foreign_id=guid[: guid.find("#")],
+                    source_id=str(source_id),
+                )
             )
             for guid, title, description, pubdate in zip(
                 data["guid"], data["title"], data["description"], data["pubDate"]
             )
         ]
 
-        print("database update completed")
-        try:
-            os.remove(LOCAL_FILE)
-        except:
-            print(f"ERROR: couldn't remove {LOCAL_FILE}")
+        print("Uploading data on Storytrends database - please wait....")
+        database.upsert_stories(bulk_data)
+
+        print("Database update completed")
+        os.remove(LOCAL_FILE)
         return True, ""
     except Exception as err:
-        print(err)
+        print(traceback.format_exc())
         message = f"Error processing source: {str(err)}"
         return False, message

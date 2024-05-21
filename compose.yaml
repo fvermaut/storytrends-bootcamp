@@ -18,4 +18,4 @@ services:
 
 volumes:
   cli-settings:
-    name: "shared-cli-settings"
+    name: "storytrends-cli-settings"

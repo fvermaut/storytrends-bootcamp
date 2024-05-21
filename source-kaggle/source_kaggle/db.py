@@ -1,13 +1,23 @@
 from datetime import datetime
 import json
 import os
+from typing import Optional
 import uuid
 from dotenv import load_dotenv
+from pydantic import BaseModel
 from supabase import Client, create_client
 from supabase.lib.client_options import ClientOptions
 
 # The path where the session info is persisted (using a docker volume - see compose.yaml)
 SESSION_FILE_PATH = "/app/.settings/session.json"
+
+
+class Story(BaseModel):
+    title: Optional[str] = None
+    summary: Optional[str] = None
+    pub_date: Optional[datetime] = None
+    foreign_id: Optional[str] = None
+    source_id: Optional[str] = None
 
 
 class Database:
@@ -28,8 +38,16 @@ class Database:
                     session_json.get("refresh_token"),
                 )
             except Exception as e:
-                print(f"ERROR: Could not authenticate:\n{str(e)}")
+                print("ERROR: Could not authenticate.  Please login again.")
                 raise e
+
+    def upsert_stories(self, stories: list[Story], overwrite: bool = False):
+        _stories = [json.loads(s.model_dump_json()) for s in stories]
+        self.database.table("stories").upsert(
+            _stories,
+            on_conflict="source_id, foreign_id",
+            ignore_duplicates=False if overwrite else True,
+        ).execute()
 
     def upsert_story(
         self,
