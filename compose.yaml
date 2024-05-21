@@ -18,4 +18,4 @@ services:
 
 volumes:
   cli-settings:
-    external: true
+    name: "shared-cli-settings"
