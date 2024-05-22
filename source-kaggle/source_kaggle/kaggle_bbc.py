@@ -3,7 +3,6 @@ from datetime import datetime
 import time
 import traceback
 import uuid
-import kaggle
 import pandas as pd
 from source_kaggle.db import Database, Story
 
@@ -21,6 +20,8 @@ def import_kaggle_bbc(source_id: uuid.UUID, from_date: datetime) -> tuple[bool, 
         data = None
 
         try:
+            import kaggle
+
             kaggle.api.dataset_download_files(
                 "gpreda/bbc-news", path=".data/", unzip=True
             )
@@ -28,7 +29,7 @@ def import_kaggle_bbc(source_id: uuid.UUID, from_date: datetime) -> tuple[bool, 
 
             data = pd.read_csv(LOCAL_FILE)
             print(f"fetched data from Kaggle - {data.shape[0]} rows")
-        except:
+        except Exception:
             # Fallback on local copy
             print(
                 "Kaggle BBC dataset could not be fetched, falling back on local test copy"
