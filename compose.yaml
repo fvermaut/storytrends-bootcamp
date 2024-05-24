@@ -16,6 +16,21 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  source-nodejs:
+    profiles:
+      - bootcamp
+    environment:
+      - SUPABASE_URL=${STORYTRENDS_API_URL}
+      - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
+    build:
+      context: ./
+      dockerfile: ./source-nodejs/Dockerfile
+      target: runtime
+    volumes:
+      - cli-settings:/usr/src/app/.settings
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 volumes:
   cli-settings:
     name: "storytrends-cli-settings"
