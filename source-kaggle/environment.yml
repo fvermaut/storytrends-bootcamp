@@ -1,0 +1,8 @@
+name: st-source-kaggle
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - poetry=1.7.1
+  - python=3.10.13
+  #- urllib3=1.26.18

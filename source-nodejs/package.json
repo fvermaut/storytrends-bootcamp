@@ -1,0 +1,25 @@
+{
+  "name": "st-cli",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "CLI for StoryTrends",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "build-ts": "tsc",
+    "build": "npm run build-ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "2.42.7",
+    "node-fetch": "3.3.2"
+  },
+  "bin": {
+    "storytrends": "./run.js"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.30",
+    "typescript": "5.4.3"
+  }
+}
