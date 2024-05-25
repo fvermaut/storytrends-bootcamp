@@ -1,5 +1,5 @@
 services:
-  st-source-kaggle:
+  sample-source-python:
     profiles:
       - bootcamp
     environment:
@@ -8,22 +8,23 @@ services:
       - KAGGLE_USERNAME=${KAGGLE_USERNAME:-""}
       - KAGGLE_KEY=${KAGGLE_KEY:-""}
     build:
-      context: ./
-      dockerfile: ./source-kaggle/Dockerfile
+      context: ./samples
+      dockerfile: ./source-python/Dockerfile
       target: runtime
     volumes:
       - cli-settings:/app/.settings
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  source-nodejs:
+  sample-source-nodejs:
     profiles:
       - bootcamp
     environment:
       - SUPABASE_URL=${STORYTRENDS_API_URL}
       - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
+      - NYT_API_KEY=${NYT_API_KEY}
     build:
-      context: ./
+      context: ./samples
       dockerfile: ./source-nodejs/Dockerfile
       target: runtime
     volumes:

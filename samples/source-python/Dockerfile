@@ -23,7 +23,7 @@ FROM builder-base as builder
 
 WORKDIR /app/st-module
 
-COPY source-kaggle/pyproject.toml source-kaggle/poetry.lock ./
+COPY source-python/pyproject.toml source-python/poetry.lock ./
 RUN touch README.md
 
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root
@@ -40,6 +40,6 @@ COPY --from=builder /app ./app
 
 WORKDIR /app/st-module
 
-COPY source-kaggle/source_kaggle ./source_kaggle
+COPY source-python/source_python ./source_python
 
-ENTRYPOINT ["python", "-m", "source_kaggle.start"]
+ENTRYPOINT ["python", "-m", "source_python.start"]

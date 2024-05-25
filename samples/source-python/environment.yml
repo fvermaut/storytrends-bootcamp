@@ -1,4 +1,4 @@
-name: st-source-kaggle
+name: st-source-python
 channels:
   - defaults
   - conda-forge

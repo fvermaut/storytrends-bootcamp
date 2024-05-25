@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "st-source-kaggle"
+name = "st-source-python"
 version = "0.1.0"
-description = "Storytrends - example source from Kaggle.com"
+description = "Storytrends - example python source"
 authors = ["Francois Vermaut <fvermaut@gmail.com>"]
 readme = "README.md"
-packages = [{include = "source_kaggle"}]
+packages = [{include = "source_python"}]
 
 [tool.poetry.dependencies]
 python = "3.10.13"

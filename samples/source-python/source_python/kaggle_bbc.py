@@ -1,10 +1,9 @@
 import os
 from datetime import datetime
-import time
 import traceback
 import uuid
 import pandas as pd
-from source_kaggle.db import Database, Story
+from source_python.db import Database, Story
 
 LOCAL_FILE = ".data/bbc_news.csv"
 LOCAL_BACKUP_FILE = "source_kaggle/test_sources_bkp/bbc_news.csv"
