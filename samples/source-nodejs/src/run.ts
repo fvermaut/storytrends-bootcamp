@@ -27,19 +27,30 @@ async function main() {
   try {
     const sourceId = process.argv[2];
     const fromDateStr = process.argv[3];
+    const currentDate = new Date();
+    let fromYear, fromMonth;
 
-    const [fromYear, fromMonth] = fromDateStr.split("-").map(Number);
-    if (
-      isNaN(fromYear) ||
-      isNaN(fromMonth) ||
-      fromMonth < 1 ||
-      fromMonth > 12
-    ) {
-      console.log("Invalid date format. Please use YYYY-MM.");
-      return;
+    if (fromDateStr) {
+      [fromYear, fromMonth] = fromDateStr.split("-").map(Number);
+      if (
+        isNaN(fromYear) ||
+        isNaN(fromMonth) ||
+        fromMonth < 1 ||
+        fromMonth > 12
+      ) {
+        console.log("Invalid date format. Please use YYYY-MM.");
+        return;
+      }
+    } else {
+      fromYear = currentDate.getFullYear();
+      fromMonth = Math.max(currentDate.getMonth() - 2, 1);
+      console.log(
+        `Start date not provided: setting to ${fromYear}-${String(
+          fromMonth
+        ).padStart(2, "0")}`
+      );
     }
 
-    const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-11
 
@@ -73,9 +84,9 @@ async function main() {
     }
 
     if (ok) {
-      console.log("import completed successfully.");
+      console.log("Import completed successfully.");
     } else {
-      console.log("import failed - see errors above.");
+      console.log("Import failed - see errors above.");
     }
   } catch (e) {
     console.log(`Error: ${e}`);

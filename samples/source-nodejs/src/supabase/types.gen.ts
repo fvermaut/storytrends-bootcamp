@@ -314,6 +314,7 @@ export type Database = {
           id: string
           last_imported_at: string | null
           name: string | null
+          stats: Json | null
           status: Database["public"]["Enums"]["source_status"]
           target_status: Database["public"]["Enums"]["source_status"]
           updated_at: string | null
@@ -324,6 +325,7 @@ export type Database = {
           id: string
           last_imported_at?: string | null
           name?: string | null
+          stats?: Json | null
           status?: Database["public"]["Enums"]["source_status"]
           target_status?: Database["public"]["Enums"]["source_status"]
           updated_at?: string | null
@@ -334,6 +336,7 @@ export type Database = {
           id?: string
           last_imported_at?: string | null
           name?: string | null
+          stats?: Json | null
           status?: Database["public"]["Enums"]["source_status"]
           target_status?: Database["public"]["Enums"]["source_status"]
           updated_at?: string | null
@@ -835,8 +838,9 @@ export type Database = {
         | "RUNNING"
         | "COMPLETED"
         | "FAILED"
-      project_types: "EVAL" | "LIVE"
-      source_status: "INIT" | "READY" | "SUSPENDED"
+        | "DELETED"
+      project_types: "EVAL_1" | "EVAL_2" | "LIVE"
+      source_status: "INIT" | "READY" | "SUSPENDED" | "DELETED"
       topic_status: "INIT" | "LATEST" | "REPLACED" | "MERGED"
       topic_trends: "NEW" | "UP" | "STABLE" | "DOWN"
     }
