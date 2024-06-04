@@ -839,7 +839,7 @@ export type Database = {
         | "COMPLETED"
         | "FAILED"
         | "DELETED"
-      project_types: "EVAL_1" | "EVAL_2" | "LIVE"
+      project_types: "EVAL" | "EVAL_1" | "EVAL_2" | "LIVE"
       source_status: "INIT" | "READY" | "SUSPENDED" | "DELETED"
       topic_status: "INIT" | "LATEST" | "REPLACED" | "MERGED"
       topic_trends: "NEW" | "UP" | "STABLE" | "DOWN"
