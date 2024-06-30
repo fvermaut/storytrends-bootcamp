@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "st-source-python"
+version = "0.1.0"
+description = "Storytrends - python source"
+authors = ["Francois Vermaut <fvermaut@gmail.com>"]
+readme = "README.md"
+packages = [{include = "st_module"}]
+
+[tool.poetry.dependencies]
+python = "3.10.13"
+pydantic = "2.6.3"
+requests = "2.31.0"
+kaggle = "1.6.4"
+pandas = "2.2.1"
+python-dotenv = "1.0.1"
+supabase = "^2.4.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
