@@ -1,9 +1,8 @@
 from datetime import datetime, timedelta
-import time
 import sys
 import uuid
 
-from source_python.kaggle_bbc import import_kaggle_bbc
+from st_module.process import process_import
 
 
 if __name__ == "__main__":
@@ -16,7 +15,7 @@ if __name__ == "__main__":
         print(f"Setting import start date at: {from_date.strftime('%Y-%m-%d')}")
 
     try:
-        result = import_kaggle_bbc(source_id=source_id, from_date=from_date)
+        result = process_import(source_id=source_id, from_date=from_date)
         if result[0]:
             print("Import done.")
         else:

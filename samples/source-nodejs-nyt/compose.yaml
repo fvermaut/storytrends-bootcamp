@@ -1,0 +1,21 @@
+services:
+  st-module:
+    profiles:
+      - bootcamp
+    environment:
+      - SUPABASE_URL=${STORYTRENDS_API_URL}
+      - SUPABASE_KEY=${STORYTRENDS_API_ANON_KEY}
+      - NYT_API_KEY=${NYT_API_KEY}
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      target: runtime
+    volumes:
+      - cli-settings:/usr/src/app/.settings
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  cli-settings:
+    name: ${CLI_SETTINGS_VOLUME_NAME:-storytrends-cli-settings}
+    external: true

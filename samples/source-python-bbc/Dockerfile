@@ -23,7 +23,7 @@ FROM builder-base as builder
 
 WORKDIR /app/st-module
 
-COPY source-python/pyproject.toml source-python/poetry.lock ./
+COPY ./pyproject.toml ./poetry.lock ./
 RUN touch README.md
 
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root
@@ -40,6 +40,6 @@ COPY --from=builder /app ./app
 
 WORKDIR /app/st-module
 
-COPY source-python/source_python ./source_python
+COPY ./st_module ./st_module
 
-ENTRYPOINT ["python", "-m", "source_python.start"]
+ENTRYPOINT ["python", "-m", "st_module.start"]

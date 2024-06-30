@@ -2,11 +2,11 @@ FROM node:20-alpine as common
 
 WORKDIR /usr/src/app
 
-COPY source-nodejs/package.json source-nodejs/package-lock.json ./
+COPY ./package.json ./package-lock.json ./
 
 RUN npm ci
 
-COPY source-nodejs .
+COPY . .
 
 RUN npm run build
 

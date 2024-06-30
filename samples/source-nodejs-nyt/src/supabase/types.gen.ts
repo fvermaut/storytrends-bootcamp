@@ -88,6 +88,8 @@ export type Database = {
         Row: {
           created_at: string
           eval: boolean | null
+          eval_coherence: number | null
+          eval_continuity: number | null
           eval_cross_diversity: number | null
           eval_diversity: number | null
           eval_merged_ratio: number | null
@@ -106,6 +108,8 @@ export type Database = {
         Insert: {
           created_at?: string
           eval?: boolean | null
+          eval_coherence?: number | null
+          eval_continuity?: number | null
           eval_cross_diversity?: number | null
           eval_diversity?: number | null
           eval_merged_ratio?: number | null
@@ -124,6 +128,8 @@ export type Database = {
         Update: {
           created_at?: string
           eval?: boolean | null
+          eval_coherence?: number | null
+          eval_continuity?: number | null
           eval_cross_diversity?: number | null
           eval_diversity?: number | null
           eval_merged_ratio?: number | null
@@ -248,7 +254,7 @@ export type Database = {
           evaluation_criterias: Json | null
           hyperparams_map: Json | null
           id: string
-          last_executed_at: string | null
+          last_started_at: string | null
           name: string | null
           settings: Json | null
           source_id: string | null
@@ -264,7 +270,7 @@ export type Database = {
           evaluation_criterias?: Json | null
           hyperparams_map?: Json | null
           id: string
-          last_executed_at?: string | null
+          last_started_at?: string | null
           name?: string | null
           settings?: Json | null
           source_id?: string | null
@@ -280,7 +286,7 @@ export type Database = {
           evaluation_criterias?: Json | null
           hyperparams_map?: Json | null
           id?: string
-          last_executed_at?: string | null
+          last_started_at?: string | null
           name?: string | null
           settings?: Json | null
           source_id?: string | null
@@ -474,6 +480,7 @@ export type Database = {
           coherence_c_uci: number | null
           coherence_c_v: number | null
           coherence_u_mass: number | null
+          confidence: number | null
           created_at: string
           date: string | null
           extracted_name: string | null
@@ -499,6 +506,7 @@ export type Database = {
           coherence_c_uci?: number | null
           coherence_c_v?: number | null
           coherence_u_mass?: number | null
+          confidence?: number | null
           created_at?: string
           date?: string | null
           extracted_name?: string | null
@@ -524,6 +532,7 @@ export type Database = {
           coherence_c_uci?: number | null
           coherence_c_v?: number | null
           coherence_u_mass?: number | null
+          confidence?: number | null
           created_at?: string
           date?: string | null
           extracted_name?: string | null
@@ -746,6 +755,7 @@ export type Database = {
           coherence_c_uci: number | null
           coherence_c_v: number | null
           coherence_u_mass: number | null
+          confidence: number | null
           created_at: string
           date: string | null
           extracted_name: string | null

@@ -3,13 +3,13 @@ from datetime import datetime
 import traceback
 import uuid
 import pandas as pd
-from source_python.db import Database, Story
+from st_module.db import Database, Story
 
 LOCAL_FILE = ".data/bbc_news.csv"
 LOCAL_BACKUP_FILE = "source_kaggle/test_sources_bkp/bbc_news.csv"
 
 
-def import_kaggle_bbc(source_id: uuid.UUID, from_date: datetime) -> tuple[bool, str]:
+def process_import(source_id: uuid.UUID, from_date: datetime) -> tuple[bool, str]:
     try:
         database = Database(auth=True)
 
