@@ -788,6 +788,24 @@ files = [
 ]
 
 [[package]]
+name = "ultimate-sitemap-parser"
+version = "0.5"
+description = "Ultimate Sitemap Parser"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "ultimate_sitemap_parser-0.5-py2.py3-none-any.whl", hash = "sha256:806e723eeb0293c38e111822d651e987b1494ae9c08be82e73172ade667418a6"},
+    {file = "ultimate_sitemap_parser-0.5.tar.gz", hash = "sha256:9825fefcdf515e2748addc7ec5dcdb6430dfdd4ef5de4a54e39de1e7613d0ece"},
+]
+
+[package.dependencies]
+python-dateutil = ">=2.1,<3.0.0"
+requests = ">=2.2.1"
+
+[package.extras]
+test = ["pytest (>=2.8)", "requests-mock (>=1.6.0,<2.0)"]
+
+[[package]]
 name = "urllib3"
 version = "2.2.1"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -899,4 +917,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.13"
-content-hash = "2e9cc56ddab07d94a1fb83ff62cc93c5322988af70e6202a38e034b12e2981b8"
+content-hash = "d6991d595c5bae7d5699309d9a4611be58f8f090383696d3f347ff356008ed69"

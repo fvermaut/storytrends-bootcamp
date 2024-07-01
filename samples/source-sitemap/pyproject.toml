@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "st-source-python"
+name = "st-sitemap"
 version = "0.1.0"
-description = "Storytrends - python source"
+description = "Storytrends - sitemap source"
 authors = ["Francois Vermaut <fvermaut@gmail.com>"]
 readme = "README.md"
 packages = [{include = "st_module"}]
@@ -14,6 +14,7 @@ kaggle = "1.6.4"
 pandas = "2.2.1"
 python-dotenv = "1.0.1"
 supabase = "^2.4.5"
+ultimate-sitemap-parser = "^0.5"
 
 [build-system]
 requires = ["poetry-core"]

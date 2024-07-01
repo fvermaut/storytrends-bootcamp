@@ -1,4 +1,4 @@
-name: st-source-python
+name: st-source-sitemap
 channels:
   - defaults
   - conda-forge

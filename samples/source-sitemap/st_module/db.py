@@ -20,6 +20,12 @@ class Story(BaseModel):
     source_id: Optional[str] = None
 
 
+class Source(BaseModel):
+    id: Optional[uuid.UUID] = None
+    name: Optional[str] = None
+    custom_settings: Optional[dict] = None
+
+
 class Database:
     def __init__(self, auth: bool = False):
         load_dotenv()
@@ -43,6 +49,25 @@ class Database:
             except Exception as e:
                 print("ERROR: Could not authenticate.  Please login again.")
                 raise e
+
+    def get_source(self, id: uuid.UUID) -> Source:
+        response = (
+            self.database.table("user_sources")
+            .select("*")
+            .eq("id", id)
+            .single()
+            .execute()
+        )
+        return Source(**response.data) if response.data else None
+
+    def update_source_custom_settings(self, source: Source):
+        response = (
+            self.database.table("user_sources")
+            .update({"custom_settings": source.custom_settings})
+            .eq("id", source.id)
+            .execute()
+        )
+        return Source(**response.data[0]) if response.data else None
 
     def upsert_stories(self, stories: list[Story], overwrite: bool = False):
         _stories = [json.loads(s.model_dump_json()) for s in stories]
