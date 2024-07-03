@@ -44,13 +44,22 @@ class Database:
                 print("ERROR: Could not authenticate.  Please login again.")
                 raise e
 
-    def upsert_stories(self, stories: list[Story], overwrite: bool = False):
+    def upsert_stories(
+        self, stories: list[Story], overwrite: bool = False, batch_size: int = 1000
+    ):
         _stories = [json.loads(s.model_dump_json()) for s in stories]
-        self.database.table("stories").upsert(
-            _stories,
-            on_conflict="source_id, foreign_id",
-            ignore_duplicates=False if overwrite else True,
-        ).execute()
+
+        def chunks(lst, n):
+            """Yield successive n-sized chunks from lst."""
+            for i in range(0, len(lst), n):
+                yield lst[i : i + n]
+
+        for batch in chunks(_stories, batch_size):
+            self.database.table("stories").upsert(
+                batch,
+                on_conflict="source_id, foreign_id",
+                ignore_duplicates=False if overwrite else True,
+            ).execute()
 
     def upsert_story(
         self,

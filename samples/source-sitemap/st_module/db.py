@@ -15,6 +15,7 @@ SESSION_FILE_PATH = "/app/.settings/session.json"
 class Story(BaseModel):
     title: Optional[str] = None
     summary: Optional[str] = None
+    text: Optional[str] = None
     pub_date: Optional[datetime] = None
     foreign_id: Optional[str] = None
     source_id: Optional[str] = None
@@ -69,13 +70,22 @@ class Database:
         )
         return Source(**response.data[0]) if response.data else None
 
-    def upsert_stories(self, stories: list[Story], overwrite: bool = False):
+    def upsert_stories(
+        self, stories: list[Story], overwrite: bool = False, batch_size: int = 1000
+    ):
         _stories = [json.loads(s.model_dump_json()) for s in stories]
-        self.database.table("stories").upsert(
-            _stories,
-            on_conflict="source_id, foreign_id",
-            ignore_duplicates=False if overwrite else True,
-        ).execute()
+
+        def chunks(lst, n):
+            """Yield successive n-sized chunks from lst."""
+            for i in range(0, len(lst), n):
+                yield lst[i : i + n]
+
+        for batch in chunks(_stories, batch_size):
+            self.database.table("stories").upsert(
+                batch,
+                on_conflict="source_id, foreign_id",
+                ignore_duplicates=False if overwrite else True,
+            ).execute()
 
     def upsert_story(
         self,
@@ -85,6 +95,7 @@ class Database:
         pubdate: str,
         overwrite: bool,
         source_id: uuid.UUID,
+        text: Optional[str] = "",
     ):
         # TODO manage the update of job_ids array
         data, count = (
@@ -95,6 +106,7 @@ class Database:
                     "title": title,
                     "foreign_id": guid,
                     "summary": description,
+                    "text": text,
                     "pub_date": pubdate.isoformat(),
                     "source_id": str(source_id),
                 },

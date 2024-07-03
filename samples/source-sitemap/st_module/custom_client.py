@@ -124,6 +124,8 @@ class RequestsCustomWebClient(AbstractWebClient):
                 set(NON_ROBOTS_SITEMAPS).difference(set(self.__robots.site_maps()))
             )
         )
+        # We keep track of the urls that had errors, so that we can NOT add them to the excluded ones
+        self.__urls_with_errors = []
 
     def set_timeout(self, timeout: int) -> None:
         """Set HTTP request timeout."""
@@ -147,6 +149,9 @@ class RequestsCustomWebClient(AbstractWebClient):
     def set_max_response_data_length(self, max_response_data_length: int) -> None:
         self.__max_response_data_length = max_response_data_length
 
+    def get_urls_with_errors(self) -> list[str]:
+        return self.__urls_with_errors
+
     def get(self, url: str) -> AbstractWebClientResponse:
         if url in [
             f"{self.__base_host}/{path}" for path in self.__disabled_non_robots_sitemaps
@@ -167,7 +172,9 @@ class RequestsCustomWebClient(AbstractWebClient):
                 headers={"User-Agent": self.__USER_AGENT},
                 proxies=self.__proxies,
             )
+            # print(response.content)
         except requests.exceptions.Timeout as ex:
+            self.__urls_with_errors.append(url)
             # Retryable timeouts
             return RequestsWebClientErrorResponse(message=str(ex), retryable=True)
 
@@ -185,6 +192,7 @@ class RequestsCustomWebClient(AbstractWebClient):
                 message = "{} {}".format(response.status_code, response.reason)
 
                 if response.status_code in RETRYABLE_HTTP_STATUS_CODES:
+                    self.__urls_with_errors.append(url)
                     return RequestsWebClientErrorResponse(
                         message=message, retryable=True
                     )

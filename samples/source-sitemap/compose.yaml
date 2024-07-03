@@ -13,8 +13,7 @@ services:
       target: runtime
     volumes:
       - cli-settings:/app/.settings
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+
 volumes:
   cli-settings:
     name: ${CLI_SETTINGS_VOLUME_NAME:-storytrends-cli-settings}
