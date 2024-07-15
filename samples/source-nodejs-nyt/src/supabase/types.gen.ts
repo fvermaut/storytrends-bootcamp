@@ -36,6 +36,7 @@ export type Database = {
     Tables: {
       jobs: {
         Row: {
+          blocks_job_id: string | null
           created_at: string
           ended_at: string | null
           id: string
@@ -49,6 +50,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          blocks_job_id?: string | null
           created_at?: string
           ended_at?: string | null
           id?: string
@@ -62,6 +64,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          blocks_job_id?: string | null
           created_at?: string
           ended_at?: string | null
           id?: string
@@ -82,6 +85,13 @@ export type Database = {
             referencedRelation: "pipelines"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "public_jobs_blocks_job_id_fkey"
+            columns: ["blocks_job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
         ]
       }
       models: {
@@ -99,6 +109,7 @@ export type Database = {
           eval_stability: number | null
           eval_topic_count: number | null
           eval_topic_size: number | null
+          has_errors: boolean | null
           hyperparams_map: Json | null
           id: string
           name: string | null
@@ -119,6 +130,7 @@ export type Database = {
           eval_stability?: number | null
           eval_topic_count?: number | null
           eval_topic_size?: number | null
+          has_errors?: boolean | null
           hyperparams_map?: Json | null
           id?: string
           name?: string | null
@@ -139,6 +151,7 @@ export type Database = {
           eval_stability?: number | null
           eval_topic_count?: number | null
           eval_topic_size?: number | null
+          has_errors?: boolean | null
           hyperparams_map?: Json | null
           id?: string
           name?: string | null
@@ -211,27 +224,33 @@ export type Database = {
       }
       pipelines: {
         Row: {
+          blocks_pipeline_id: string | null
           created_at: string
           eval: boolean | null
           id: string
+          mdl_id: string | null
           name: string | null
           project_id: string
           running: boolean | null
           updated_at: string | null
         }
         Insert: {
+          blocks_pipeline_id?: string | null
           created_at?: string
           eval?: boolean | null
           id?: string
+          mdl_id?: string | null
           name?: string | null
           project_id: string
           running?: boolean | null
           updated_at?: string | null
         }
         Update: {
+          blocks_pipeline_id?: string | null
           created_at?: string
           eval?: boolean | null
           id?: string
+          mdl_id?: string | null
           name?: string | null
           project_id?: string
           running?: boolean | null
@@ -239,10 +258,24 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "pipelines_model_id_fkey"
+            columns: ["mdl_id"]
+            isOneToOne: false
+            referencedRelation: "models"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "pipelines_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_pipelines_blocks_pipeline_id_fkey"
+            columns: ["blocks_pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "pipelines"
             referencedColumns: ["id"]
           },
         ]
@@ -254,6 +287,7 @@ export type Database = {
           evaluation_criterias: Json | null
           hyperparams_map: Json | null
           id: string
+          internal: boolean | null
           last_started_at: string | null
           name: string | null
           settings: Json | null
@@ -270,6 +304,7 @@ export type Database = {
           evaluation_criterias?: Json | null
           hyperparams_map?: Json | null
           id: string
+          internal?: boolean | null
           last_started_at?: string | null
           name?: string | null
           settings?: Json | null
@@ -286,6 +321,7 @@ export type Database = {
           evaluation_criterias?: Json | null
           hyperparams_map?: Json | null
           id?: string
+          internal?: boolean | null
           last_started_at?: string | null
           name?: string | null
           settings?: Json | null
@@ -366,6 +402,7 @@ export type Database = {
           pub_date: string | null
           source_id: string | null
           summary: string | null
+          text: string | null
           title: string | null
           updated_at: string | null
           url: string | null
@@ -378,6 +415,7 @@ export type Database = {
           pub_date?: string | null
           source_id?: string | null
           summary?: string | null
+          text?: string | null
           title?: string | null
           updated_at?: string | null
           url?: string | null
@@ -390,6 +428,7 @@ export type Database = {
           pub_date?: string | null
           source_id?: string | null
           summary?: string | null
+          text?: string | null
           title?: string | null
           updated_at?: string | null
           url?: string | null
@@ -664,6 +703,7 @@ export type Database = {
       user_sources: {
         Row: {
           created_at: string
+          custom_settings: Json | null
           id: string
           name: string | null
           req_status: Database["public"]["Enums"]["source_status"] | null
@@ -672,6 +712,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          custom_settings?: Json | null
           id?: string
           name?: string | null
           req_status?: Database["public"]["Enums"]["source_status"] | null
@@ -680,6 +721,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          custom_settings?: Json | null
           id?: string
           name?: string | null
           req_status?: Database["public"]["Enums"]["source_status"] | null
@@ -696,11 +738,68 @@ export type Database = {
           },
         ]
       }
+      workers: {
+        Row: {
+          created_at: string
+          health_checked_at: string | null
+          id: string
+          job_id: string | null
+          status: Database["public"]["Enums"]["worker_status"]
+          status_updated_at: string | null
+          type: Database["public"]["Enums"]["worker_type"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          health_checked_at?: string | null
+          id?: string
+          job_id?: string | null
+          status?: Database["public"]["Enums"]["worker_status"]
+          status_updated_at?: string | null
+          type?: Database["public"]["Enums"]["worker_type"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          health_checked_at?: string | null
+          id?: string
+          job_id?: string | null
+          status?: Database["public"]["Enums"]["worker_status"]
+          status_updated_at?: string | null
+          type?: Database["public"]["Enums"]["worker_type"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_workers_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      allocate_worker: {
+        Args: {
+          worker_type_input: Database["public"]["Enums"]["worker_type"]
+          job_id_input: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          status_updated_at: string
+          health_checked_at: string
+          job_id: string
+          status: Database["public"]["Enums"]["worker_status"]
+          type: Database["public"]["Enums"]["worker_type"]
+        }[]
+      }
       create_topic: {
         Args: {
           extracted_name_input: string
@@ -797,6 +896,7 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: {
           created_at: string
+          custom_settings: Json | null
           id: string
           name: string | null
           req_status: Database["public"]["Enums"]["source_status"] | null
@@ -836,6 +936,7 @@ export type Database = {
     Enums: {
       pipeline_status:
         | "INIT"
+        | "WAITING"
         | "QUEUED"
         | "RUNNING"
         | "SUCCESS"
@@ -853,6 +954,8 @@ export type Database = {
       source_status: "INIT" | "READY" | "SUSPENDED" | "DELETED"
       topic_status: "INIT" | "LATEST" | "REPLACED" | "MERGED"
       topic_trends: "NEW" | "UP" | "STABLE" | "DOWN"
+      worker_status: "IDLE" | "ALLOCATED" | "UNRESPONSIVE" | "TERMINATED"
+      worker_type: "topic" | "lang" | "eval" | "source"
     }
     CompositeTypes: {
       [_ in never]: never
