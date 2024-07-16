@@ -22,7 +22,7 @@ newspaper_config.fetch_images = False
 # Only fetch the sitemap items that are "News Sitemap" elements (recommended: True - otherwise this could fetch a lot of noise)
 FETCH_ONLY_SITEMAP_NEWS = True
 
-# COMMON SETTING
+# COMMON SETTINGS
 EXCLUDED_SITEMAP_URLS_SETTING_NAME = "excludedSitemapUrls"
 
 
@@ -89,7 +89,7 @@ def process_sitemap(sitemap, from_date: datetime) -> SitemapProcessResponse:
     )
 
 
-def process_import(
+def process_sitemap_import(
     source_id: uuid.UUID, site_base_url: str, from_date: datetime
 ) -> tuple[bool, str]:
     try:
@@ -183,9 +183,10 @@ def process_import(
             merged_excluded_sitemap_urls = new_excluded_sitemap_urls.union(
                 excluded_sitemap_urls
             )
-            source.custom_settings = {
-                EXCLUDED_SITEMAP_URLS_SETTING_NAME: list(merged_excluded_sitemap_urls)
-            }
+            source.custom_settings[EXCLUDED_SITEMAP_URLS_SETTING_NAME] = list(
+                merged_excluded_sitemap_urls
+            )
+
             database = Database(
                 auth=True
             )  # Reinstantiate as token may have expired due to long process
