@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import sys
+import traceback
 import uuid
 
 from urllib.parse import urlparse
@@ -37,6 +38,7 @@ if __name__ == "__main__":
         print("Terminating on user input...")
     except Exception as e:
         print(f"An error occurred: {e}")
+        print(traceback.format_exc())
     finally:
         print("Process completed.")
         sys.exit(0)

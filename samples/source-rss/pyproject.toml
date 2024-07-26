@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "st-source-sitemap"
+name = "st-source-rss"
 version = "0.1.0"
-description = "Storytrends - sitemap source"
+description = "Storytrends - rss source"
 authors = ["Francois Vermaut <fvermaut@gmail.com>"]
 readme = "README.md"
 packages = [{include = "st_module"}]
@@ -13,9 +13,9 @@ requests = "2.31.0"
 pandas = "2.2.1"
 python-dotenv = "1.0.1"
 supabase = "^2.4.5"
-ultimate-sitemap-parser = "^0.5"
 newspaper3k = "^0.2.8"
 lxml-html-clean = "^0.1.1"
+feedparser = "^6.0.11"
 
 [build-system]
 requires = ["poetry-core"]

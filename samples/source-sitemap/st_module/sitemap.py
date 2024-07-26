@@ -99,7 +99,7 @@ def process_sitemap_import(
 
         source = database.get_source(source_id)
         excluded_sitemap_urls = (
-            set(source.custom_settings.get(EXCLUDED_SITEMAP_URLS_SETTING_NAME))
+            set(source.custom_settings.get(EXCLUDED_SITEMAP_URLS_SETTING_NAME, []))
             if source.custom_settings
             else set()
         )
@@ -183,6 +183,9 @@ def process_sitemap_import(
             merged_excluded_sitemap_urls = new_excluded_sitemap_urls.union(
                 excluded_sitemap_urls
             )
+
+            if source.custom_settings is None:
+                source.custom_settings = {}
             source.custom_settings[EXCLUDED_SITEMAP_URLS_SETTING_NAME] = list(
                 merged_excluded_sitemap_urls
             )
